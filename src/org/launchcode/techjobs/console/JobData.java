@@ -21,13 +21,6 @@ public class JobData {
 
     private static ArrayList<HashMap<String, String>> allJobs;
 
-    /**
-     * Fetch list of all values from loaded data,
-     * without duplicates, for a given column.
-     *
-     * @param field The column to retrieve values from
-     * @return List of all of the values of the given field
-     */
     public static ArrayList<String> findAll(String field) {
 
         // load data, if not already loaded
@@ -51,7 +44,10 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        return allJobs;
+        // returns a copy of allJobs(Bonus Mission)
+        Object allJobsCopy = allJobs.clone();
+        return (ArrayList<HashMap<String, String>>) allJobsCopy;
+        // return allJobs; (previous return value)
     }
 
     /**
@@ -76,13 +72,46 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
-                jobs.add(row);
+            if (aValue.toLowerCase().contains(value.toLowerCase())) { // ignores case without changing case
+                if (!jobs.contains(row)) // prevents duplicate entries
+                    jobs.add(row);
             }
         }
 
         return jobs;
     }
+//doesn't contain dups, "As with printJobs, you should write your code in a way that if a new column is added to the data,
+    //your code will automatically search the new column as well,
+    //don't use findbycolumvalue once for each column, use loops and collection methods
+    /** public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
+     loadData();
+     ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+     for (HashMap<String, String> row : allJobs) {
+     String aValue = row.get(column);
+     if (aValue.contains(value)) {
+     jobs.add(row);
+     }
+     }
+     return jobs;
+     }
+     */
+    //call somewhere in main-probably the other option to findByColumnValue if-else line 64
+    //Edits beneath
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        value = value.toLowerCase();//ignores capitilization
+        loadData();//loads data if not loaded
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();//makes new ArrayList object
+        for (HashMap<String, String> job : allJobs) {//iterates through all jobs checking for like values
+            for (String key : job.keySet()) {//iterates through a given specification (job, place, etc) for like values
+                if (job.get(key).toLowerCase().contains(value)) {//if it finds a match it adds it to "jobs"
+                    jobs.add(job);
+                    break;
+                }
+            }
+        }
+        return jobs;//returns final values
+    }
+
 
     /**
      * Read in data from a CSV file and store it in a list

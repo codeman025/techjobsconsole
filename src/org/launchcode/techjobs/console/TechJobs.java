@@ -1,8 +1,5 @@
 package org.launchcode.techjobs.console;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -39,15 +36,22 @@ public class TechJobs {
 
                 if (columnChoice.equals("all")) {
                     printJobs(JobData.findAll());
+
                 } else {
 
                     ArrayList<String> results = JobData.findAll(columnChoice);
 
                     System.out.println("\n*** All " + columnChoices.get(columnChoice) + " Values ***");
 
+                    // public static final Comparator <String> CASE_INSENSITIVE_ORDER
+                    Collections.sort(results, String.CASE_INSENSITIVE_ORDER);
+
                     // Print list of skills, employers, etc
                     for (String item : results) {
                         System.out.println(item);
+                    }
+                    if (results.isEmpty()) {
+                        System.out.println("no match found");
                     }
                 }
 
@@ -61,8 +65,27 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
-                } else {
+
+                    // load a list of jobs containing the specified search term to see if it is empty
+                    ArrayList<HashMap<String, String>> jobList = JobData.findByValue(searchTerm);
+
+                    if (jobList.isEmpty()) {
+                        System.out.println("no results");
+                    }
+
+                    printJobs(JobData.findByValue(searchTerm));}
+                //System.out.println("Search all fields not yet implemented.");
+
+
+                else {
+
+                    // load a list of jobs containing the specified search term to see if it is empty
+                    ArrayList<HashMap<String, String>> jobList = JobData.findByColumnAndValue(searchField, searchTerm);
+
+                    if (jobList.isEmpty()) {
+                        System.out.println("no results");
+                    }
+
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
             }
@@ -108,9 +131,21 @@ public class TechJobs {
         return choiceKeys[choiceIdx];
     }
 
-    // Print a list of jobs
+    // Print a list of jobs formatted with ***** enclosing each entry and an empty line between each entry
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+        for (HashMap<String, String> job : someJobs){
+            System.out.println("***");
+
+            for (Map.Entry<String, String> value : job.entrySet()) {
+                System.out.println(value.getKey() + ": " + value.getValue());
+            }
+            {System.out.println("***");
+                System.out.println( );
+            }
+//double for loop prints out 5 stars, then (value.getKey() & value.getValue());
+// then prints 5 stars again, basically separating
+// out all the entries you asked for with ***'s until there is no more job info
+        }
     }
 }
