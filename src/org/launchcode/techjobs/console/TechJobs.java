@@ -83,7 +83,7 @@ public class TechJobs {
                     ArrayList<HashMap<String, String>> jobList = JobData.findByColumnAndValue(searchField, searchTerm);
 
                     if (jobList.isEmpty()) {
-                        System.out.println("no matches");
+                        System.out.println("no matchez");
                     }
 
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
