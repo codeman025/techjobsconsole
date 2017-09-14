@@ -97,7 +97,7 @@ public class JobData {
      */
     //call somewhere in main-probably the other option to findByColumnValue if-else line 64
     //Edits beneath
-    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {//searches for a string within each column
         value = value.toLowerCase();//ignores capitilization
         loadData();//loads data if not loaded
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();//makes new ArrayList object
